@@ -49,7 +49,6 @@ void VectorNav_INIT() {
   VECTORNAV0.begin(9600);
   VECTORNAV0.print("$VNWRG,05,9600*58"); // This should be configuring the imu itself
   const char *configCommand = "$VNWRG,07,1*XX\r\n"; // Replace with VN-100 command for enabling acceleration
-  //const char *configCommand2 = "$VNRRG,27,+006.380,+000.023,-001.953,+1.0640,-0.2531,+3.0614,+00.005,+00.344,-09.758,-0.001222,-0.000450,-0.001218*4F"; // Yaw, Pitch, Roll, Magnetic, Acceleration, and Angular Rates
   VECTORNAV0.print(configCommand);
   Serial.println("VectorNav0 configured");
 
@@ -62,7 +61,6 @@ void VectorNav_INIT() {
   // VectorNav 2
   VECTORNAV2.begin(9600);
   VECTORNAV2.print("$VNWRG,05,9600*58");
-      //configCommand = "$VNWRG,07,1*XX\r\n"; // Replace with VN-100 command for enabling acceleration
   VECTORNAV2.print(configCommand);
   Serial.println("VectorNav2 configured");
 }
@@ -76,16 +74,16 @@ void sendVN100Command(const char *command) {
   }
 
   // Send the full command with checksum
-  VECTORNAV0.print(command);          // Send the command string (e.g., $VNRRG,02)
+  VECTORNAV0.print(command);          // Send the command string 
   VECTORNAV0.printf("%02X\r\n", checksum); // Append the checksum and CRLF
 
   // Send the full command with checksum
-  VECTORNAV1.print(command);          // Send the command string (e.g., $VNRRG,02)
-  VECTORNAV1.printf("%02X\r\n", checksum); // Append the checksum and CRLF
+  VECTORNAV1.print(command);          
+  VECTORNAV1.printf("%02X\r\n", checksum); 
 
   // Send the full command with checksum
-  VECTORNAV2.print(command);          // Send the command string (e.g., $VNRRG,02)
-  VECTORNAV2.printf("%02X\r\n", checksum); // Append the checksum and CRLF
+  VECTORNAV2.print(command);          
+  VECTORNAV2.printf("%02X\r\n", checksum);
 }
 
 void VectorNav_READ(){
@@ -94,22 +92,16 @@ void VectorNav_READ(){
     incomingByte = VECTORNAV0.read();
     Serial.print("VECTORNAV0 UART received: ");
     Serial.println(incomingByte, DEC);
-    //VECTORNAV0.print("VECTORNAV0 UART received:");
-    //VECTORNAV0.println(incomingByte, DEC);
   }
   if (VECTORNAV1.available() > 0) {
     incomingByte = VECTORNAV1.read();
     Serial.print("VECTORNAV1 UART received: ");
     Serial.println(incomingByte, DEC);
-    //VECTORNAV1.print("VECTORNAV1 UART received:");
-    //VECTORNAV1.println(incomingByte, DEC);
   }
   if (VECTORNAV2.available() > 0) {
     incomingByte = VECTORNAV2.read();
     Serial.print("VECTORNAV2 UART received: ");
     Serial.println(incomingByte, DEC);
-    //VECTORNAV2.print("VECTORNAV2 UART received:");
-    //VECTORNAV2.println(incomingByte, DEC);
   }
 }
 
@@ -123,7 +115,6 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   sendVN100Command("$VNRRG,02");
   VectorNav_READ();
 
